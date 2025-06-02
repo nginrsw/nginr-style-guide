@@ -5,7 +5,6 @@ This repository provides an official style guide and coding conventions for writ
 ## Key Features of nginr
 
 - **Concise & Modern Syntax**: Use `fn` to declare functions easily
-- **Type Hints**: Our style is full support for Python type hints
 - **Pythonic**: Compatible with all existing Python libraries
 - **Easy to Learn**: Of course, because it is based on Python
 
