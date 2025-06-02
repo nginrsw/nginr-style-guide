@@ -1,4 +1,4 @@
-# calculator.xg - Example calculator program in Nginr
+# calculator.xr - Example calculator program in Nginr
 
 from typing import Union, Optional
 
