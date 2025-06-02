@@ -1,4 +1,4 @@
-# kalkulator.xg - Contoh program kalkulator dengan Nginr
+# kalkulator.xr - Contoh program kalkulator dengan Nginr
 
 from typing import Union, Optional
 
