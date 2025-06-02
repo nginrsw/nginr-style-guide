@@ -11,7 +11,7 @@ This repository provides an official style guide and coding conventions for writ
 
 ## Documentation
 
-See [STYLE_GUIDE_EN.md](STYLE_GUIDE_EN.md) for a comprehensive Nginr code style guide.
+See [STYLE GUIDE](STYLE_GUIDE_EN.md) for a comprehensive nginr code style guide.
 
 ## Example Programs
 
