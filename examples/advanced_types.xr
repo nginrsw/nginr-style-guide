@@ -1,4 +1,4 @@
-# advanced_types.xg - Advanced type hints examples in Nginr
+# advanced_types.xr - Advanced type hints examples in Nginr
 
 from typing import Union, Optional, List, Dict, Any, Callable, TypeVar, Generic, Tuple
 from dataclasses import dataclass
