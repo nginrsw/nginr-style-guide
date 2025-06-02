@@ -1,4 +1,4 @@
-# list_generator.xg - List Comprehension and Generator Examples in Nginr
+# list_generator.xr - List Comprehension and Generator Examples in Nginr
 
 from typing import List, Dict, Tuple, Generator, Iterator, Any, Callable, Optional
 import random
