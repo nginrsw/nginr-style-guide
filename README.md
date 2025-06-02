@@ -6,7 +6,7 @@ This repository provides an official style guide and coding conventions for writ
 
 - **Concise & Modern Syntax**: Use `fn` to declare functions easily
 - **Pythonic**: Compatible with all existing Python libraries
-- **Easy to Learn**: Of course, because it is based on Python
+- **Easy to Learn**: Of course, because it is still Python
 
 ## Documentation
 
