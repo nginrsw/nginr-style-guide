@@ -1,0 +1,155 @@
+# advanced_types.xg - Advanced type hints examples in Nginr
+
+from typing import Union, Optional, List, Dict, Any, Callable, TypeVar, Generic, Tuple
+from dataclasses import dataclass
+from enum import Enum, auto
+from pathlib import Path
+import json
+from datetime import datetime
+
+# ===== TYPE ALIASES =====
+# Create aliases for complex types
+Name = str
+Age = int
+Address = Dict[str, str]
+StudentScores = Dict[Name, float]
+
+# Generic Type Variable
+T = TypeVar('T')
+U = TypeVar('U')
+
+# ===== ENUMERATIONS =====
+class OrderStatus(Enum):
+    DRAFT = auto()
+    PROCESSING = auto()
+    SHIPPED = auto()
+    COMPLETED = auto()
+    CANCELLED = auto()
+
+# ===== DATA CLASSES =====
+@dataclass
+class Student:
+    name: str
+    age: int
+    scores: Dict[str, float]
+    active: bool = True
+    
+    fn average_score(self) -> float:
+        """Calculate the average score of the student."""
+        if not self.scores:
+            return 0.0
+        return sum(self.scores.values()) / len(self.scores)
+    
+    fn __str__(self) -> str:
+        return f"{self.name} ({self.age} years old)"
+
+# ===== GENERIC CLASSES =====
+class Box(Generic[T]):
+    fn __init__(self, content: T):
+        self.content: T = content
+    
+    fn get_content(self) -> T:
+        return self.content
+    
+    fn __str__(self) -> str:
+        return f"Box containing: {self.content}"
+
+# ===== FUNCTIONS WITH ADVANCED TYPES =====
+fn merge_dicts(dict1: Dict[T, U], dict2: Dict[T, U]) -> Dict[T, U]:
+    """Merge two dictionaries."""
+    return {**dict1, **dict2}
+
+fn process_data(data: Union[str, List[str], Dict[str, Any]]) -> str:
+    """Process different types of input data."""
+    if isinstance(data, str):
+        return f"String with length {len(data)}"
+    elif isinstance(data, list):
+        return f"List with {len(data)} elements"
+    elif isinstance(data, dict):
+        return f"Dict with keys: {', '.join(data.keys())}"
+    return "Unknown data type"
+
+fn filter_and_transform(
+    data: List[T], 
+    condition: Callable[[T], bool],
+    transform: Callable[[T], U]
+) -> List[U]:
+    """
+    Filter and transform elements in a list based on a condition.
+    
+    Args:
+        data: List of data to process
+        condition: Function that returns True for elements to include
+        transform: Function to transform each included element
+        
+    Returns:
+        List of transformed elements
+    """
+    return [transform(item) for item in data if condition(item)]
+
+# ===== TYPE GUARDS =====
+fn is_number(value: Any) -> bool:
+    """Check if a value is a number (int or float)."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+fn process_number(value: Any) -> float:
+    """Process a value if it's a number."""
+    if not is_number(value):
+        raise ValueError("Value must be a number")
+    return value * 2
+
+# ===== USAGE EXAMPLES =====
+fn usage_examples() -> None:
+    # Enum example
+    status = OrderStatus.PROCESSING
+    print(f"Order status: {status.name} ({status.value})")
+    
+    # Data Class example
+    student1 = Student(
+        name="John Doe",
+        age=20,
+        scores={"Math": 85, "Physics": 78, "Chemistry": 92}
+    )
+    print(f"\nStudent Data: {student1}")
+    print(f"Average score: {student1.average_score():.2f}")
+    
+    # Generic Class example
+    number_box = Box(42)
+    text_box = Box("Hello, World!")
+    print(f"\n{number_box}")
+    print(text_box)
+    
+    # Generic Function example
+    dict1 = {"a": 1, "b": 2}
+    dict2 = {"c": 3, "d": 4}
+    print(f"\nMerged dictionary: {merge_dicts(dict1, dict2)}")
+    
+    # Union Types example
+    print(f"\nProcess string: {process_data('Hello')}")
+    print(f"Process list: {process_data([1, 2, 3])}")
+    print(f"Process dict: {process_data({'a': 1, 'b': 2})}")
+    
+    # Higher-Order Function example
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    result = filter_and_transform(
+        data=numbers,
+        condition=lambda x: x % 2 == 0,  # Only even numbers
+        transform=lambda x: x ** 2       # Square them
+    )
+    print(f"\nEven numbers squared: {result}")
+    
+    # Type Guards example
+    try:
+        print(f"\nProcessed number: {process_number(10)}")
+        print(process_number("not_a_number"))  # Will raise ValueError
+    except ValueError as e:
+        print(f"Error: {e}")
+
+# ===== MAIN =====
+fn main() -> None:
+    print("=== Advanced Type Hints in Nginr ===\n")
+    usage_examples()
+
+
+if __name__ == "__main__":
+    main()

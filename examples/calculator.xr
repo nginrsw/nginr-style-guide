@@ -1,0 +1,100 @@
+# calculator.xg - Example calculator program in Nginr
+
+from typing import Union, Optional
+
+class Calculator:
+    """Class for performing basic calculator operations."""
+    
+    fn __init__(self) -> None:
+        self.memory: float = 0.0
+    
+    fn add(self, number: float) -> float:
+        """Add a number to memory."""
+        self.memory += number
+        return self.memory
+    
+    fn subtract(self, number: float) -> float:
+        """Subtract a number from memory."""
+        self.memory -= number
+        return self.memory
+    
+    fn multiply(self, number: float) -> float:
+        """Multiply memory by a number."""
+        self.memory *= number
+        return self.memory
+    
+    fn divide(self, number: float) -> Optional[float]:
+        """Divide memory by a number."""
+        if number == 0:
+            print("Error: Cannot divide by zero!")
+            return None
+        self.memory /= number
+        return self.memory
+    
+    fn reset(self) -> None:
+        """Reset memory to zero."""
+        self.memory = 0.0
+
+
+fn read_number(prompt: str) -> float:
+    """Read a number from user input with validation."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Error: Invalid input. Please enter a number.")
+
+
+fn display_menu() -> None:
+    """Display the calculator menu."""
+    print("\nSimple Calculator")
+    print("1. Add (+)")
+    print("2. Subtract (-)")
+    print("3. Multiply (*)")
+    print("4. Divide (/)")
+    print("5. Reset")
+    print("6. Exit")
+
+
+fn main() -> None:
+    """Main function for the calculator program."""
+    calculator = Calculator()
+    
+    print("Welcome to Nginr Calculator!")
+    print(f"Initial value: {calculator.memory}\n")
+    
+    while True:
+        display_menu()
+        choice = input("\nSelect operation (1-6): ").strip()
+        
+        if choice == "6":
+            print("\nThank you for using the calculator!")
+            break
+            
+        if choice in ["1", "2", "3", "4"]:
+            number = read_number("Enter a number: ")
+            
+            if choice == "1":
+                result = calculator.add(number)
+                print(f"Result: {result}")
+            elif choice == "2":
+                result = calculator.subtract(number)
+                print(f"Result: {result}")
+            elif choice == "3":
+                result = calculator.multiply(number)
+                print(f"Result: {result}")
+            elif choice == "4":
+                result = calculator.divide(number)
+                if result is not None:
+                    print(f"Result: {result}")
+        
+        elif choice == "5":
+            calculator.reset()
+            print("Memory has been reset to 0")
+        
+        else:
+            print("Invalid choice. Please select 1-6.")
+
+
+if __name__ == "__main__":
+    main()

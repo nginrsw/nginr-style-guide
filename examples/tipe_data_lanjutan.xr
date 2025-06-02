@@ -1,0 +1,155 @@
+# tipe_data_lanjutan.xg - Contoh penggunaan tipe data lanjutan di Nginr
+
+from typing import List, Dict, Tuple, Set, Optional, Union, Any, Callable, TypeVar, Generic
+from dataclasses import dataclass
+from enum import Enum, auto
+from pathlib import Path
+import json
+from datetime import datetime
+
+# ===== TYPE ALIASES =====
+# Membuat alias untuk tipe yang kompleks
+Nama = str
+Usia = int
+Alamat = Dict[str, str]
+NilaiSiswa = Dict[Nama, float]
+
+# Generic Type Variable
+T = TypeVar('T')
+U = TypeVar('U')
+
+# ===== ENUMERASI =====
+class StatusPesanan(Enum):
+    DRAFT = auto()
+    DIPROSES = auto()
+    DIKIRIM = auto()
+    SELESAI = auto()
+    DIBATALKAN = auto()
+
+# ===== DATA CLASS =====
+@dataclass
+class Siswa:
+    nama: str
+    usia: int
+    nilai: Dict[str, float]
+    aktif: bool = True
+    
+    fn rata_rata(self) -> float:
+        """Menghitung rata-rata nilai siswa."""
+        if not self.nilai:
+            return 0.0
+        return sum(self.nilai.values()) / len(self.nilai)
+    
+    fn __str__(self) -> str:
+        return f"{self.nama} ({self.usia} tahun)"
+
+# ===== GENERIC CLASS =====
+class Kotak(Generic[T]):
+    fn __init__(self, isi: T):
+        self.isi: T = isi
+    
+    fn dapatkan_isi(self) -> T:
+        return self.isi
+    
+    fn __str__(self) -> str:
+        return f"Kotak berisi: {self.isi}"
+
+# ===== FUNGSI DENGAN TIPE LANJUTAN =====
+fn gabungkan_kamus(kamus1: Dict[T, U], kamus2: Dict[T, U]) -> Dict[T, U]:
+    """Menggabungkan dua kamus."""
+    return {**kamus1, **kamus2}
+
+fn proses_data(data: Union[str, List[str], Dict[str, Any]]) -> str:
+    """Memproses berbagai tipe data input."""
+    if isinstance(data, str):
+        return f"String dengan panjang {len(data)}"
+    elif isinstance(data, list):
+        return f"List dengan {len(data)} elemen"
+    elif isinstance(data, dict):
+        return f"Dict dengan kunci: {', '.join(data.keys())}"
+    return "Tipe data tidak dikenali"
+
+fn filter_dan_ubah(
+    data: List[T], 
+    kondisi: Callable[[T], bool],
+    ubah: Callable[[T], U]
+) -> List[U]:
+    """
+    Filter dan ubah elemen dalam list berdasarkan kondisi.
+    
+    Args:
+        data: List data yang akan diproses
+        kondisi: Fungsi yang mengembalikan True untuk elemen yang ingin disertakan
+        ubah: Fungsi untuk mengubah setiap elemen yang lolos filter
+        
+    Returns:
+        List hasil transformasi
+    """
+    return [ubah(item) for item in data if kondisi(item)]
+
+# ===== TYPE GUARDS =====
+fn adalah_angka(value: Any) -> bool:
+    """Menentukan apakah nilai adalah angka (int atau float)."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+fn proses_angka(value: Any) -> float:
+    """Memproses nilai jika berupa angka."""
+    if not adalah_angka(value):
+        raise ValueError("Nilai harus berupa angka")
+    return value * 2
+
+# ===== CONTOH PENGGUNAAN =====
+fn contoh_penggunaan() -> None:
+    # Contoh Enum
+    status = StatusPesanan.DIPROSES
+    print(f"Status pesanan: {status.name} ({status.value})")
+    
+    # Contoh Data Class
+    siswa1 = Siswa(
+        nama="Budi Santoso",
+        usia=17,
+        nilai={"Matematika": 85, "Fisika": 78, "Kimia": 92}
+    )
+    print(f"\nData Siswa: {siswa1}")
+    print(f"Rata-rata nilai: {siswa1.rata_rata():.2f}")
+    
+    # Contoh Generic Class
+    kotak_angka = Kotak(42)
+    kotak_teks = Kotak("Hello, World!")
+    print(f"\n{kotak_angka}")
+    print(kotak_teks)
+    
+    # Contoh Fungsi Generic
+    kamus1 = {"a": 1, "b": 2}
+    kamus2 = {"c": 3, "d": 4}
+    print(f"\nGabungan kamus: {gabungkan_kamus(kamus1, kamus2)}")
+    
+    # Contoh Union Types
+    print(f"\nProses data string: {proses_data('Hello')}")
+    print(f"Proses data list: {proses_data([1, 2, 3])}")
+    print(f"Proses data dict: {proses_data({'a': 1, 'b': 2})}")
+    
+    # Contoh Higher-Order Function
+    angka = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    hasil = filter_dan_ubah(
+        data=angka,
+        kondisi=lambda x: x % 2 == 0,  # Hanya bilangan genap
+        ubah=lambda x: x ** 2          # Kuadratkan
+    )
+    print(f"\nBilangan genap dikuadratkan: {hasil}")
+    
+    # Contoh Type Guards
+    try:
+        print(f"\nHasil proses angka: {proses_angka(10)}")
+        print(proses_angka(ukan_angka"))  # Akan memunculkan ValueError
+    except ValueError as e:
+        print(f"Error: {e}")
+
+# ===== MAIN =====
+fn main() -> None:
+    print("=== Contoh Tipe Data Lanjutan di Nginr ===\n")
+    contoh_penggunaan()
+
+
+if __name__ == "__main__":
+    main()

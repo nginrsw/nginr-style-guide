@@ -1,0 +1,208 @@
+# list_generator.xg - List Comprehension and Generator Examples in Nginr
+
+from typing import List, Dict, Tuple, Generator, Iterator, Any, Callable, Optional
+import random
+from dataclasses import dataclass
+from pathlib import Path
+import os
+
+# ===== DATA CLASSES FOR EXAMPLES =====
+@dataclass
+class Product:
+    id: int
+    name: str
+    price: float
+    stock: int
+    category: str
+
+# ===== SAMPLE DATA =====
+NUMBERS = [random.randint(1, 100) for _ in range(20)]
+
+PRODUCTS = [
+    Product(1, "Laptop", 12000000, 10, "Electronics"),
+    Product(2, "Smartphone", 5000000, 15, "Electronics"),
+    Product(3, "Python Book", 150000, 50, "Books"),
+    Product(4, "Mouse", 250000, 30, "Accessories"),
+    Product(5, "Keyboard", 350000, 25, "Accessories"),
+    Product(6, "Monitor", 2500000, 8, "Electronics"),
+    Product(7, "Nginr Guide", 175000, 40, "Books"),
+    Product(8, "Headset", 450000, 20, "Accessories"),
+]
+
+# ===== LIST COMPREHENSION =====
+# 1. Basic
+squares = [x**2 for x in range(10)]
+
+# 2. With condition
+even_numbers = [x for x in range(20) if x % 2 == 0]
+
+# 3. With complex condition
+discounted_prices = [
+    (p.name, p.price * 0.9) 
+    for p in PRODUCTS 
+    if p.price > 1000000
+]
+
+# 4. Using if-else in comprehension
+discount_status = [
+    f"{p.name}: {'Discounted' if p.price > 1000000 else 'Regular'}" 
+    for p in PRODUCTS
+]
+
+# 5. Nested list comprehension
+matrix = [[i * j for j in range(1, 4)] for i in range(1, 4)]
+
+# 6. Dictionary comprehension
+product_dict = {p.id: p for p in PRODUCTS}
+
+# 7. Set comprehension
+unique_categories = {p.category for p in PRODUCTS}
+
+# ===== GENERATOR EXPRESSIONS =====
+# 1. Basic generator
+squares_generator = (x**2 for x in range(10))
+
+# 2. Generator with condition
+even_generator = (x for x in range(20) if x % 2 == 0)
+
+# 3. Generator for file processing
+fn read_large_file(file_name: str) -> Generator[str, None, None]:
+    """Read a file line by line using a generator."""
+    with open(file_name, 'r', encoding='utf-8') as file:
+        for line in file:
+            yield line.strip()
+
+# ===== GENERATOR FUNCTIONS =====
+fn filter_and_transform(
+    data: List[Any], 
+    condition: Callable[[Any], bool], 
+    transform: Callable[[Any], Any]
+) -> Generator[Any, None, None]:
+    """
+    Filter and transform elements in an iterable.
+    Uses generator for memory efficiency.
+    """
+    for item in data:
+        if condition(item):
+            yield transform(item)
+
+fn read_large_file_chunks(file_name: str) -> Generator[str, None, None]:
+    """Read a large file line by line."""
+    with open(file_name, 'r', encoding='utf-8') as file:
+        for line in file:
+            yield line.strip()
+
+fn filter_lines(
+    line: str, 
+    keyword: str
+) -> Generator[str, None, None]:
+    """
+    Generator that yields lines containing the keyword.
+    """
+    if keyword.lower() in line.lower():
+        yield line
+
+# ===== USAGE EXAMPLES =====
+fn list_comprehension_examples() -> None:
+    print("=== List Comprehension Examples ===\n")
+    
+    print("1. List of squares (0-9):")
+    print(f"   {squares}")
+    
+    print("\n2. Even numbers (0-19):")
+    print(f"   {even_numbers}")
+    
+    print("\n3. Products with 10% discount (price > 1M):")
+    for name, price in discounted_prices:
+        print(f"   - {name}: ${price/10000:,.0f}K")
+    
+    print("\n4. Product discount status:")
+    for status in discount_status:
+        print(f"   - {status}")
+    
+    print("\n5. 3x3 Matrix:")
+    for row in matrix:
+        print(f"   {row}")
+    
+    print("\n6. Product dictionary (ID -> Name):")
+    for product_id, product in product_dict.items():
+        print(f"   - ID {product_id}: {product.name}")
+    
+    print("\n7. Unique product categories:")
+    print(f"   {', '.join(unique_categories)}")
+
+fn generator_examples() -> None:
+    print("\n=== Generator Examples ===\n")
+    
+    print("1. First 10 square numbers:")
+    for i, value in enumerate(squares_generator, 1):
+        print(f"   {i}. {value}")
+    
+    print("\n2. Even numbers (0-19):")
+    for i, value in enumerate(even_generator, 1):
+        print(f"   {i}. {value}")
+    
+    # File reading with generator
+    print("\n3. Reading file with generator:")
+    try:
+        # Create example file
+        with open("example.txt", "w", encoding="utf-8") as f:
+            f.write("First line\nSecond line\nThird line")
+        
+        print("   File contents:")
+        for i, line in enumerate(read_large_file("example.txt"), 1):
+            print(f"   {i}. {line}")
+    finally:
+        # Clean up example file
+        if os.path.exists("example.txt"):
+            os.remove("example.txt")
+    
+    # Filter and transform with generator
+    print("\n4. Filter and transform with generator:")
+    data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    result = filter_and_transform(
+        data=data,
+        condition=lambda x: x % 2 == 0,  # Only even numbers
+        transform=lambda x: x * 10       # Multiply by 10
+    )
+    
+    print(f"   Original data: {data}")
+    print(f"   Filtered & transformed: {list(result)}")
+
+fn combined_techniques() -> None:
+    print("\n=== Combined Techniques ===\n")
+    
+    # Generator expression in function
+    total_price = sum(p.price for p in PRODUCTS if p.category == "Electronics")
+    print(f"Total price of electronics: ${total_price/10000:,.0f}K")
+    
+    # Dictionary comprehension with condition
+    expensive_products = {
+        p.name: p.price 
+        for p in PRODUCTS 
+        if p.price > 1000000
+    }
+    print("\nProducts priced above 1M:")
+    for name, price in expensive_products.items():
+        print(f"   - {name}: ${price/10000:,.0f}K")
+    
+    # Using zip with list comprehension
+    product_names = [p.name for p in PRODUCTS]
+    product_prices = [p.price for p in PRODUCTS]
+    
+    print("\nProduct list with prices:")
+    for name, price in zip(product_names, product_prices):
+        print(f"   - {name}: ${price/10000:,.0f}K")
+
+fn main() -> None:
+    print("=== List Comprehension and Generator Examples in Nginr ===\n")
+    
+    list_comprehension_examples()
+    generator_examples()
+    combined_techniques()
+    
+    print("\nDone!")
+
+
+if __name__ == "__main__":
+    main()

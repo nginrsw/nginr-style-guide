@@ -1,0 +1,100 @@
+# kalkulator.xg - Contoh program kalkulator dengan Nginr
+
+from typing import Union, Optional
+
+class Kalkulator:
+    """Kelas untuk melakukan operasi kalkulator sederhana."""
+    
+    fn __init__(self) -> None:
+        self.memori: float = 0.0
+    
+    fn tambah(self, angka: float) -> float:
+        """Menambahkan angka ke memori."""
+        self.memori += angka
+        return self.memori
+    
+    fn kurang(self, angka: float) -> float:
+        """Mengurangi memori dengan angka."""
+        self.memori -= angka
+        return self.memori
+    
+    fn kali(self, angka: float) -> float:
+        """Mengalikan memori dengan angka."""
+        self.memori *= angka
+        return self.memori
+    
+    fn bagi(self, angka: float) -> Optional[float]:
+        """Membagi memori dengan angka."""
+        if angka == 0:
+            print("Error: Tidak bisa membagi dengan nol!")
+            return None
+        self.memori /= angka
+        return self.memori
+    
+    fn reset(self) -> None:
+        """Mengembalikan memori ke nilai 0."""
+        self.memori = 0.0
+
+
+fn baca_angka(prompt: str) -> float:
+    """Membaca input angka dari pengguna."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Error: Masukan tidak valid. Harap masukkan angka.")
+
+
+fn tampilkan_menu() -> None:
+    """Menampilkan menu kalkulator."""
+    print("\nKalkulator Sederhana")
+    print("1. Tambah (+)")
+    print("2. Kurang (-)")
+    print("3. Kali (*)")
+    print("4. Bagi (/)")
+    print("5. Reset")
+    print("6. Keluar")
+
+
+fn main() -> None:
+    """Fungsi utama program kalkulator."""
+    kalkulator = Kalkulator()
+    
+    print("Selamat datang di Kalkulator Nginr!")
+    print(f"Nilai awal: {kalkulator.memori}\n")
+    
+    while True:
+        tampilkan_menu()
+        pilihan = input("\nPilih operasi (1-6): ").strip()
+        
+        if pilihan == "6":
+            print("\nTerima kasih telah menggunakan kalkulator!")
+            break
+            
+        if pilihan in ["1", "2", "3", "4"]:
+            angka = baca_angka("Masukkan angka: ")
+            
+            if pilihan == "1":
+                hasil = kalkulator.tambah(angka)
+                print(f"Hasil: {hasil}")
+            elif pilihan == "2":
+                hasil = kalkulator.kurang(angka)
+                print(f"Hasil: {hasil}")
+            elif pilihan == "3":
+                hasil = kalkulator.kali(angka)
+                print(f"Hasil: {hasil}")
+            elif pilihan == "4":
+                hasil = kalkulator.bagi(angka)
+                if hasil is not None:
+                    print(f"Hasil: {hasil}")
+        
+        elif pilihan == "5":
+            kalkulator.reset()
+            print("Memori telah direset ke 0")
+        
+        else:
+            print("Pilihan tidak valid. Silakan pilih 1-6.")
+
+
+if __name__ == "__main__":
+    main()
