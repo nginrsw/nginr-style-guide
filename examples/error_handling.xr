@@ -1,4 +1,4 @@
-# error_handling.xg - Error handling examples in Nginr
+# error_handling.xr - Error handling examples in Nginr
 
 from typing import Optional, Union, List, Dict, Any
 import json
