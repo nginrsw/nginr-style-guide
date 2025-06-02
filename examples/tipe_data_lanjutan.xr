@@ -1,4 +1,4 @@
-# tipe_data_lanjutan.xg - Contoh penggunaan tipe data lanjutan di Nginr
+# tipe_data_lanjutan.xr - Contoh penggunaan tipe data lanjutan di Nginr
 
 from typing import List, Dict, Tuple, Set, Optional, Union, Any, Callable, TypeVar, Generic
 from dataclasses import dataclass
