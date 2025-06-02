@@ -1,6 +1,6 @@
-# Nginr - Lightweight Preprocessor for Python
+# Nginr Style Guide
 
-Nginr is a lightweight preprocessor for Python that offers an alternative syntax style and is still under active development.
+nginr is a lightweight preprocessor for Python that offers an alternative syntax style and is still under active development.
 
 ## Key Features
 
