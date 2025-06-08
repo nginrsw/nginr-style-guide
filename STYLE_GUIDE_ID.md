@@ -1,6 +1,6 @@
 # Panduan Gaya Penulisan Kode Nginr
 
-Dokumen ini memberikan panduan untuk menulis kode Nginr yang bersih, mudah dipelihara, dan konsisten. Nginr adalah preprosesor ringan untuk Python yang menawarkan gaya sintaks alternatif.
+Dokumen ini memberikan panduan untuk menulis kode Nginr yang bersih, mudah dipelihara, dan konsisten. nginr adalah preprosesor ringan untuk Python yang menawarkan gaya sintaks alternatif.
 
 ## Daftar Isi
 1. [Fungsi](#fungsi)
