@@ -1,6 +1,6 @@
 # Nginr Code Style Guide
 
-This document provides guidelines for writing clean, maintainable, and consistent Nginr code. Nginr is a lightweight preprocessor for Python that offers an alternative syntax style.
+This document provides guidelines for writing clean, maintainable, and consistent Nginr code. nginr is a lightweight preprocessor for Python that offers an alternative syntax style.
 
 ## Table of Contents
 
